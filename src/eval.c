@@ -4392,7 +4392,7 @@ eval6(
  *  (expression)	nested expression
  *  [expr, expr]	List
  *  {key: val, key: val}   Dictionary
- *  #{key: val, key: val}  Dictionary with literal keys
+ *  🐶{key: val, key: val}  Dictionary with literal keys
  *
  *  Also handle:
  *  ! in front		logical NOT
@@ -4445,6 +4445,9 @@ eval7(
 	return FAIL;
     }
 
+    // char *hoge = alloc(100);
+    // sprintf(hoge, "%d %d %d %d", (*arg)[0], (*arg)[1], (*arg)[2], (*arg)[3]);
+    // emsg(hoge);
     switch (**arg)
     {
     /*
@@ -4577,11 +4580,11 @@ eval7(
 		break;
 
     /*
-     * Dictionary: #{key: val, key: val}
+     * Dictionary: 🐶{key: val, key: val}
      */
-    case '#':	if ((*arg)[1] == '{')
+    case 0xf0:	if ((*arg)[1] == 0x9f && (*arg)[2] == 0x90 && (*arg)[3] == 0xb6 && (*arg)[4] == '{')
 		{
-		    ++*arg;
+		    *arg += 4;
 		    ret = dict_get_tv(arg, rettv, evaluate, TRUE);
 		}
 		else
